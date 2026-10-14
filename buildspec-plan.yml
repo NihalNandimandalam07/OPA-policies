@@ -34,7 +34,7 @@ phases:
       - terraform validate
       - echo "Terraform Plan initiated"
       - terraform plan -out=tfplan
-      - terraform show -no-color tfplan > plan-review.txt
+      - terraform show -json tfplan > tfplan.json
       - echo "Terraform Plan completed"
 
       - echo "Evaluating OPA polices"
@@ -58,12 +58,5 @@ phases:
   
 artifacts:
   files:
-    - "**.*"
-    - "tfplan"
-    - ".terraform.lock.hcl"
-  exclude-paths:
-    - "terraform.zip"
-    - ".terraform/**/*"
-    - ".git/**/*"
-    - "*.tfstate"
-    - "*.tfstate.backup"
+    - tfplan.json
+  discard-paths: yes
