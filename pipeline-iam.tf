@@ -148,6 +148,22 @@ resource "aws_iam_role_policy" "codebuild_policy" {
         Effect = "Allow"
 
         Action = [
+          "iam:GetRole",
+          "iam:GetRolePolicy",
+          "iam:ListRolePolicies",
+          "iam:ListAttachedRolePolicies",
+          "iam:ListInstanceProfilesForRole"
+        ]
+
+        Resource = [
+          "arn:aws:iam::909698979753:role/OPA-Codepipeline-role",
+          "arn:aws:iam::909698979753:role/OPA-Codebuild-role"
+        ]
+      },
+      {
+        Effect = "Allow"
+
+        Action = [
           "ec2:Describe*",
           "ec2:CreateVpc",
           "ec2:DeleteVpc",
