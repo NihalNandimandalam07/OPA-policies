@@ -151,7 +151,16 @@ resource "aws_iam_role_policy" "codebuild_policy" {
         ]
 
         Resource = "*"
-      }
+      },
+      {
+        Effect = "Allow"
+
+        Action = [
+          "codeconnections:UseConnection"
+        ]
+
+        Resource = "arn:aws:codeconnections:us-east-2:909698979753:connection/a942a4d8-bfa1-49fa-a90f-778a677c7e37"
+      } 
     ]
   })
 }
