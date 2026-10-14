@@ -22,6 +22,8 @@ resource "aws_security_group" "sg_1" {
     name = "OPA-Compliant-Security-Group"
   }
 
+  depends_on = [ aws_vpc.opa_vpc ]
+
 }
 
 #OPA Non-Compliant SG
@@ -55,5 +57,7 @@ resource "aws_security_group" "sg_2" {
   tags = {
     name = "OPA-Non-Compliant-Security-Group"
   }
+
+  depends_on = [ aws_vpc.opa_vpc ]
 
 }
