@@ -15,6 +15,7 @@ data "aws_ami" "aws_ami" {
 
 #Compliant EC2
 resource "aws_instance" "ec2_1" {
+  
   ami           = data.aws_ami.aws_ami.id
   instance_type = var.instance_type
   subnet_id     = aws_subnet.opa_subnet.id
@@ -40,7 +41,7 @@ resource "aws_instance" "ec2_1" {
   depends_on = [aws_subnet.opa_subnet, aws_security_group.sg_1]
 }
 
-/*
+
 #Non-Compliant EC2
 resource "aws_instance" "ec2_2" {
   ami           = data.aws_ami.aws_ami.id
@@ -67,4 +68,3 @@ resource "aws_instance" "ec2_2" {
 
   depends_on = [ aws_subnet.opa_subnet, aws_security_group.sg_2 ]
 }
-*/
