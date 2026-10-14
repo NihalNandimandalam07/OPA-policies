@@ -39,7 +39,7 @@ phases:
 
       - echo "Evaluating OPA polices"
       - |
-        echo "checking "No Open Ports"
+        echo "checking No Open Ports"
         opa eval -d opa-policies/no_open_ports.rego -i tfplan.json -f pretty "data.ec2_no_open_ports.deny"
 
         echo "Checking IMDSv2"
