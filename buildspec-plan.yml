@@ -58,5 +58,7 @@ phases:
   
 artifacts:
   files:
+    - tfplan
     - tfplan.json
+    - .terraform.lock.hcl
   discard-paths: yes
