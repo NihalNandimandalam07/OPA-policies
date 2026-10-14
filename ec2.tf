@@ -37,7 +37,7 @@ resource "aws_instance" "ec2_1" {
     name = "OPA-COMPLIANT-EC2-INSTANCE"
   }
 
-  depends_on = [ aws_subnet.opa_subnet, aws_security_group.sg_1 ]
+  depends_on = [aws_subnet.opa_subnet, aws_security_group.sg_1]
 }
 
 /*

@@ -22,7 +22,7 @@ resource "aws_security_group" "sg_1" {
     name = "OPA-Compliant-Security-Group"
   }
 
-  depends_on = [ aws_vpc.opa_vpc ]
+  depends_on = [aws_vpc.opa_vpc]
 
 }
 

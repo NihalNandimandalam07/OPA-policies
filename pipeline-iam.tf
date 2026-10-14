@@ -30,10 +30,13 @@ resource "aws_iam_role_policy" "codepipeline_policy" {
 
         Action = [
           "codebuild:StartBuild",
-          "codebuild:BatChGetBuilds"
+          "codebuild:BatchGetBuilds"
         ]
 
-        Resource = "arn:aws:codebuild:us-east-2:909698979753:project/opa-policy-build-pipeline"
+        Resource = [
+          "arn:aws:codebuild:us-east-2:909698979753:project/opa-policy-build-pipeline",
+          "arn:aws:codebuild:us-east-2:909698979753:project/opa-policy-apply-pipeline"
+        ]
       },
       {
         Effect = "Allow"
@@ -169,7 +172,7 @@ resource "aws_iam_role_policy" "codebuild_policy" {
         Resource = "*"
       },
       {
-        Sid = "GitHubConnectionAccess"
+        Sid    = "GitHubConnectionAccess"
         Effect = "Allow"
 
         Action = [
@@ -179,7 +182,7 @@ resource "aws_iam_role_policy" "codebuild_policy" {
         ]
 
         Resource = "arn:aws:codeconnections:us-east-2:909698979753:connection/a942a4d8-bfa1-49fa-a90f-778a677c7e37"
-      } 
+      }
     ]
   })
 }
