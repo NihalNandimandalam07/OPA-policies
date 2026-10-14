@@ -41,13 +41,21 @@ resource "aws_iam_role_policy" "codepipeline_policy" {
         Action = [
           "s3:GetBucketLocation",
           "s3:GetBucketVersioning",
-          "s3:ListBucket",
+          "s3:ListBucket"
+        ]
+
+        Resource = "arn:aws:s3:::opa-terraform-state-backend-nn"
+      },
+      {
+        Effect = "Allow"
+
+        Action = [
           "s3:GetObject",
           "s3:GetObjectVersion",
           "s3:PutObject"
         ]
 
-        Resource = "arn:aws:s3:::opa-terraform-state-backend-nn"
+        Resource = "arn:aws:s3:::opa-terraform-state-backend-nn/*"
       },
       {
         Effect = "Allow"
