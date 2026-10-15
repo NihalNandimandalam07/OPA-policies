@@ -49,12 +49,13 @@ phases:
         opa eval -d opa-policies/ebs_encrypt.rego -i tfplan.json -f pretty "data.ec2_ebs_encrypt.deny"
 
         echo "Evaluating all three OPA Polciies"
-        opa eval --fail -d opa-policies/ -i tfplan.json 'count(data.ec2_no_open_ports.deny)==0;count(data.ec2_imdsv2.deny)==0;count(data.ec2_ebs_encrypt.deny)==0'
+        opa eval --fail-defined -d opa-policies/ -i tfplan.json 'data.validation.deny[_]'
+
+        echo "All OPA policies passed"
   
   post_build:
     commands:
       - echo "Terraform Plan completed successfully"
-      - echo "All OPA policies have been evaludated"
   
 artifacts:
   files:
