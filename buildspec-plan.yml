@@ -1,4 +1,4 @@
-#Triggering a pipeline
+#Triggering a pipeline for testing
 version: 0.2
 
 phases:
