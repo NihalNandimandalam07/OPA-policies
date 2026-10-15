@@ -48,7 +48,7 @@ resource "aws_instance" "ec2_2" {
   instance_type = var.instance_type
   subnet_id     = aws_subnet.opa_subnet.id
 
-  vpc_security_group_ids      = [aws_security_group.sg_2.id]
+  vpc_security_group_ids      = [aws_security_group.sg_1.id]
   associate_public_ip_address = false
 
   metadata_options {
