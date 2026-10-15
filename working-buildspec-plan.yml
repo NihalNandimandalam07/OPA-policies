@@ -1,0 +1,64 @@
+#Triggering a pipeline for testing
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo "Installing Terraform"
+      - |
+        curl -fsSLo terraform.zip https://releases.hashicorp.com/terraform/1.16.6/terraform_1.16.6_linux_amd64.zip
+        unzip -o terraform.zip
+        install terraform /usr/local/bin/terraform
+        terraform --version
+
+      - echo "Installing OPA"
+      - | 
+        curl -fsSLo opa https://openpolicyagent.org/downloads/latest/opa_linux_amd64_static
+        chmod +x opa
+        mv opa /usr/local/bin
+        opa version
+
+      - echo "Terraform and OPA installed successfully"
+    
+  pre_build:
+    commands:
+      - echo "Initializing Terraform"
+      - terraform init
+      - echo "Checking OPA"
+      - opa check --strict opa-policies/
+  
+  build:
+    commands:
+      - echo "Applying Terraform configuration"
+      - terraform fmt
+      - terraform validate
+      - echo "Terraform Plan initiated"
+      - terraform plan -out=tfplan
+      - terraform show -json tfplan > tfplan.json
+      - echo "Terraform Plan completed"
+
+      - echo "Evaluating OPA polices"
+      - |
+        echo "checking No Open Ports"
+        opa eval -d opa-policies/no_open_ports.rego -i tfplan.json -f pretty "data.ec2_no_open_ports.deny"
+
+        echo "Checking IMDSv2"
+        opa eval -d opa-policies/imdsv2.rego -i tfplan.json -f pretty "data.ec2_imdsv2.deny"
+
+        echo "Checking EBS Encryption"
+        opa eval -d opa-policies/ebs_encrypt.rego -i tfplan.json -f pretty "data.ec2_ebs_encrypt.deny"
+
+        echo "Evaluating all three OPA Polciies"
+        opa eval --fail -d opa-policies/ -i tfplan.json 'count(data.ec2_no_open_ports.deny)==0;count(data.ec2_imdsv2.deny)==0;count(data.ec2_ebs_encrypt.deny)==0'
+  
+  post_build:
+    commands:
+      - echo "Terraform Plan completed successfully"
+      - echo "All OPA policies have been evaludated"
+  
+artifacts:
+  files:
+    - tfplan
+    - tfplan.json
+    - .terraform.lock.hcl
+  discard-paths: yes
