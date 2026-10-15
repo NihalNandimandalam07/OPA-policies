@@ -15,3 +15,8 @@ ports_public_access(sg) if {
 	some rule in sg.ingress
 	"0.0.0.0/0" in rule.cidr_blocks
 }
+
+ports_public_access(sg) if {
+	some rule in sg.ingress
+	"::/0" in rule.ipv6_cidr_blocks
+}
